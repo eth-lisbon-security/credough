@@ -1,0 +1,19 @@
+{
+  "name": "escrow-deposit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eth-lisbon-security/escrow-deposit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eth-lisbon-security/escrow-deposit/issues"
+  },
+  "homepage": "https://github.com/eth-lisbon-security/escrow-deposit#readme"
+}

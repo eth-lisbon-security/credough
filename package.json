@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/eth-lisbon-security/escrow-deposit/issues"
   },
-  "homepage": "https://github.com/eth-lisbon-security/escrow-deposit#readme"
+  "homepage": "https://github.com/eth-lisbon-security/escrow-deposit#readme",
+  "dependencies": {
+    "apollo-server-express": "^3.10.3",
+    "graphql": "^16.6.0",
+    "graphql-request": "^5.0.0"
+  }
 }

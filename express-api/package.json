@@ -13,7 +13,10 @@
   "dependencies": {
     "@aave/protocol-js": "^4.3.0",
     "axios": "^1.1.3",
+    "bignumber.js": "^9.1.0",
+    "coingecko-api-v3": "^0.0.15",
     "dotenv": "^16.0.3",
+    "ethers": "^5.7.2",
     "express": "^4.18.2",
     "graphql-request": "^5.0.0"
   },

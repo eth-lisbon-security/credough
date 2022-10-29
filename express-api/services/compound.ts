@@ -1,6 +1,9 @@
 import axios from "axios";
 import { request, gql } from "graphql-request";
-import BigNumber from "bignumber.js";
+import ethers, { BigNumber } from "ethers";
+import erc20Abi from "../abi/erc20.json";
+
+const USDC_CONTRACT_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
 
 // TODO: Use "toFixed" to round off the score to 2 decimal places
 // function toFixed(x: string) {
@@ -47,8 +50,10 @@ async function getScoreOnCompound(address: string) {
   }
   `;
 
-	const compoundDetails = await request(BASE_GRAPH_URI, query);
-	console.log("compoundDetails", compoundDetails);
+	const [compoundDetails, liquidityScore] = await Promise.all([
+		request(BASE_GRAPH_URI, query),
+		getLiquidityScore(address),
+	]);
 
 	const {
 		id,
@@ -58,8 +63,7 @@ async function getScoreOnCompound(address: string) {
 		health,
 		totalBorrowValueInEth,
 		totalCollateralValueInEth,
-	} = compoundDetails.account;
-	console.log("hasBorrowed", hasBorrowed);
+	} = compoundDetails?.account ?? {};
 
 	// Undefined score
 	if (!hasBorrowed) {
@@ -76,7 +80,7 @@ async function getScoreOnCompound(address: string) {
 	console.log(score);
 
 	const adjustedScore =
-		BigNumber(maxRange)
+		BigNumber.from(maxRange)
 			.div(1 + Math.exp(-growthRate * score))
 
 			.toNumber() + minValue;
@@ -91,6 +95,38 @@ async function getScoreOnCompound(address: string) {
 	 */
 
 	return adjustedScore;
+}
+
+async function getLiquidityScore(address: string) {
+	const provider = ethers.providers.getDefaultProvider();
+	const ethBalance = await provider.getBalance(address);
+
+	const usdcContract = new ethers.Contract(
+		USDC_CONTRACT_ADDRESS,
+		erc20Abi,
+		provider
+	);
+
+	const usdcBalance = await usdcContract.balanceOf(address);
+
+	const coinGeckoData = (
+		await axios.get(
+			"https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+		)
+	).data;
+
+	let ethPrice: number;
+	for (const [coinGeckoId, coinDetails] of Object.entries(coinGeckoData)) {
+		const { usd } = coinDetails as Record<string, unknown>;
+		ethPrice = usd as number;
+	}
+
+	const totalValue =
+		BigNumber.from(ethers.utils.formatEther(usdcBalance)).div(
+			BigNumber.from(ethPrice!)
+		) + ethers.utils.formatEther(ethBalance);
+
+	return totalValue;
 }
 
 export { getCompoundData, getScoreOnCompound };

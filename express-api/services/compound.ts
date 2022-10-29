@@ -5,8 +5,13 @@ import erc20Abi from "../abi/erc20.json";
 
 const USDC_CONTRACT_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
 
-// TODO: Use "toFixed" to round off the score to 2 decimal places
-// function toFixed(x: string) {
+const provider = new ethers.providers.AlchemyProvider(
+	"mainnet",
+	"rOiQsk0cIqALCVVNiqeBhir4vk388VC_"
+);
+
+// function toFixed(x: number) {
+// 	let xStr = x.toString();
 // 	if (Math.abs(x) < 1.0) {
 // 		var e = parseInt(x.toString().split("e-")[1]);
 // 		if (e) {
@@ -36,6 +41,8 @@ async function getCompoundData(address: string) {
 }
 
 async function getScoreOnCompound(address: string) {
+	const SCORE_WITHOUT_BORROW = 400;
+
 	const query = gql`
   {
     account(id: "${address}") {
@@ -67,22 +74,30 @@ async function getScoreOnCompound(address: string) {
 
 	// Undefined score
 	if (!hasBorrowed) {
-		return null;
+		return SCORE_WITHOUT_BORROW;
 	}
 
 	const maxRange = 550;
 	const growthRate = 2;
 	const minValue = 300;
 
-	let score =
-		totalCollateralValueInEth /
-		(countLiquidated == 0 ? 1 : countLiquidated * totalBorrowValueInEth);
-	console.log(score);
+	let compoundScore =
+		(totalCollateralValueInEth ?? 0) /
+		((countLiquidated ?? 0) == 0
+			? 1
+			: (countLiquidated ?? 0) * (totalBorrowValueInEth ?? 0));
+
+	let liquidityScoreModified =
+		liquidityScore < BigNumber.from(1) ? BigNumber.from(1) : liquidityScore;
+	const leverageRatio = BigNumber.from(totalBorrowValueInEth ?? 0).div(
+		BigNumber.from(liquidityScoreModified)
+	);
+
+	const score = BigNumber.from(compoundScore).mul(leverageRatio);
 
 	const adjustedScore =
 		BigNumber.from(maxRange)
-			.div(1 + Math.exp(-growthRate * score))
-
+			.div(1 + Math.round(Math.exp(-growthRate * score.toNumber())))
 			.toNumber() + minValue;
 
 	/**
@@ -98,7 +113,6 @@ async function getScoreOnCompound(address: string) {
 }
 
 async function getLiquidityScore(address: string) {
-	const provider = ethers.providers.getDefaultProvider();
 	const ethBalance = await provider.getBalance(address);
 
 	const usdcContract = new ethers.Contract(
@@ -109,22 +123,20 @@ async function getLiquidityScore(address: string) {
 
 	const usdcBalance = await usdcContract.balanceOf(address);
 
-	const coinGeckoData = (
-		await axios.get(
-			"https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
-		)
+	const coinApiData = (
+		await axios.get("https://rest.coinapi.io/v1/exchangerate/ETH/USD", {
+			headers: {
+				"X-CoinAPI-Key": "4A568F30-7547-4C2E-B6D6-557ED94A063E",
+			},
+		})
 	).data;
 
-	let ethPrice: number;
-	for (const [coinGeckoId, coinDetails] of Object.entries(coinGeckoData)) {
-		const { usd } = coinDetails as Record<string, unknown>;
-		ethPrice = usd as number;
-	}
+	const ethRateToUsd = coinApiData.rate;
 
-	const totalValue =
-		BigNumber.from(ethers.utils.formatEther(usdcBalance)).div(
-			BigNumber.from(ethPrice!)
-		) + ethers.utils.formatEther(ethBalance);
+	const totalValue = ethers.utils
+		.parseEther(usdcBalance.toString())
+		.div(BigNumber.from(Math.round(ethRateToUsd!)))
+		.add(ethBalance);
 
 	return totalValue;
 }

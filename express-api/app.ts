@@ -6,8 +6,6 @@ import { getCompoundData, getScoreOnCompound } from "./services/compound";
 const app: Express = express();
 const port = process.env.PORT ?? 3000;
 
-const testAddress = "0x21C8dc59f2E9A11c4C1a0C310641968132c6b1Be";
-
 app.get("/", async (req: Request, res: Response) => {
 	const userAddress = req.query.address;
 

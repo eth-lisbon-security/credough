@@ -10,24 +10,15 @@ const provider = new ethers.providers.AlchemyProvider(
 	"rOiQsk0cIqALCVVNiqeBhir4vk388VC_"
 );
 
-// function toFixed(x: number) {
-// 	let xStr = x.toString();
-// 	if (Math.abs(x) < 1.0) {
-// 		var e = parseInt(x.toString().split("e-")[1]);
-// 		if (e) {
-// 			x *= Math.pow(10, e - 1);
-// 			x = "0." + new Array(e).join("0") + x.toString().substring(2);
-// 		}
-// 	} else {
-// 		var e = parseInt(x.toString().split("+")[1]);
-// 		if (e > 20) {
-// 			e -= 20;
-// 			x /= Math.pow(10, e);
-// 			x += new Array(e + 1).join("0");
-// 		}
-// 	}
-// 	return x;
-// }
+function toFixed(x: number) {
+	if (Math.abs(x) < 1.0) {
+		var e = parseInt(x.toString().split("e-")[1]);
+		if (e) {
+			return 0;
+		}
+	}
+	return x;
+}
 
 const BASE_GRAPH_URI =
 	"https://api.thegraph.com/subgraphs/name/graphprotocol/compound-v2";
@@ -68,8 +59,8 @@ async function getScoreOnCompound(address: string) {
 		countLiquidator,
 		hasBorrowed,
 		health,
-		totalBorrowValueInEth,
-		totalCollateralValueInEth,
+		totalBorrowValueInEth: borrowValueInEth,
+		totalCollateralValueInEth: collateralInEth,
 	} = compoundDetails?.account ?? {};
 
 	// Undefined score
@@ -77,9 +68,15 @@ async function getScoreOnCompound(address: string) {
 		return SCORE_WITHOUT_BORROW;
 	}
 
+	const totalBorrowValueInEth = toFixed(borrowValueInEth);
+	const totalCollateralValueInEth = toFixed(collateralInEth);
+
+	// Numbers range from 300 -> 300 + 550
 	const maxRange = 550;
-	const growthRate = 2;
 	const minValue = 300;
+
+	// Aribritary numbers
+	const growthRate = 2;
 
 	let compoundScore =
 		(totalCollateralValueInEth ?? 0) /
@@ -99,15 +96,6 @@ async function getScoreOnCompound(address: string) {
 		BigNumber.from(maxRange)
 			.div(1 + Math.round(Math.exp(-growthRate * score.toNumber())))
 			.toNumber() + minValue;
-
-	/**
-	 * 1. totalCollateralValue -> positive correlation
-	 * 2. totalBorrowValue -> negative correlation
-	 * 3. health -> positive correlation
-	 * 4. countLiquidated -> (dependant)
-	 * 5.
-	 *
-	 */
 
 	return adjustedScore;
 }

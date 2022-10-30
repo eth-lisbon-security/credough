@@ -10,38 +10,33 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-const Header: NextPage = () => {
+const HeaderBase: NextPage = () => {
   const { isOpen, open, close } = useConnectModal();
   const { account } = useAccount();
   const router = useRouter();
 
   return (
     <Flex
-      flexDir="row"
-      justifyContent="space-between"
       //height="5vh"
       width="90%"
-      backgroundColor="#38B5DCA1"
       borderRadius="15px"
       p={5}
       mt={35}
+      justifyContent="space-between"
+      flexDir="row"
     >
-      <Flex>
-        <Image src={"/images/o_donut.png"} width={40} height={40}></Image>
-        <Heading color="white" fontFamily={"Sniglet"} pl={3}>
+      <Flex alignItems={"center"}>
+        <Image src={"/images/o_donut.png"} width={65} height={65}></Image>
+        <Heading color="black" fontFamily={"Sniglet"} pl={3}>
           Credough
         </Heading>
       </Flex>
-      <Flex>
-        <Button
-          className="bg-white rounded-xl"
-          onClick={() => router.push("/flow")}
-        >
-          🍩 Get started
-        </Button>
-      </Flex>
+      {/*new code*/}
+      {/*<Flex>{account.isConnected ? <Web3Button /> : <></>}</Flex>*/}
+      {/*debug*/}
+      <Flex>{!account.isConnected ? <ConnectButton /> : <Web3Button />}</Flex>
     </Flex>
   );
 };
 
-export default Header;
+export default HeaderBase;

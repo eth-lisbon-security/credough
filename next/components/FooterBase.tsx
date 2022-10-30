@@ -9,7 +9,7 @@ import {
 } from "@web3modal/react";
 import Image from "next/image";
 
-const Footer: NextPage = () => {
+const FooterBase: NextPage = () => {
   const { isOpen, open, close } = useConnectModal();
   const { account } = useAccount();
   return (
@@ -18,16 +18,15 @@ const Footer: NextPage = () => {
       justifyContent="center"
       alignItems={"center"}
       height="10vh"
-      width="100%"
+      width="90%"
       borderRadius="15px"
       p={5}
       position="fixed"
       bottom={0}
-      className="bg-gradient-to-t from-sniglet-blue to-white"
     >
       <span className="font-sniglet">made with ❤️ at ETHLisbon 🇵🇹</span>
     </Flex>
   );
 };
 
-export default Footer;
+export default FooterBase;

@@ -30,7 +30,6 @@ const Home: NextPage = () => {
     <Flex
       flexDir="column"
       alignItems="center"
-      justifyContent="center"
       height="100vh"
       width="100%"
       backgroundColor="white"

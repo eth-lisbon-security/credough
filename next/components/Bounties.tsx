@@ -4,7 +4,12 @@ const Bounties = () => {
   return (
     <Flex flexDir="column" alignItems="center" p={5}>
       <Heading>built with</Heading>
-      <Flex flexDir={["column", null, "row"]} alignItems="center" gap="24px">
+      <Flex
+        flexDir={["column", null, "row"]}
+        alignItems="center"
+        gap="24px"
+        pt={5}
+      >
         <Image src="/images/sommelier.png" alt="Sommelier" />
         <Image src="/images/ipfs.png" alt="IPFS" width="100px" height="40px" />
         <Image
@@ -24,12 +29,6 @@ const Bounties = () => {
           alt="Compound"
           width="200px"
           height="54px"
-        />
-        <Image
-          src="/images/euler.png"
-          alt="Euler"
-          width="200px"
-          height="35px"
         />
       </Flex>
     </Flex>

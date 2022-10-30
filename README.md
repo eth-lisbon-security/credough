@@ -5,7 +5,7 @@ This is the official ETHLISBON Hackathon 2022 submission for our project Credoug
 
 ## Project Description 
 
-
+Credough oracle allows DeFi platforms to understand the real credit risk of profiles across their communities, by incorporating both traditional financial credit scores (web2) and web 3 scores.
 
 
 ## Features 
@@ -19,9 +19,11 @@ Those deployments were done using Hardhat.
 
 ## How it Works
 
-1. 
-2. 
-3.  
+1. Defi platforms benefit from Credough's API service which can be used with an oracle service such as IEXEC that we have implemented to
+determine whether a user is creditworthy when borrowing on a DeFi lending protocol.
+2. The user logs into their FICO score on C. 
+3.  The FICO score and user PID data is sent directly to the smart contract stored and encrypted. 
+4. Only the user connected with his wallet can retrieve then the information. 
 
 
 ## What's next for Credough ? 

@@ -7,6 +7,7 @@ import FooterBase from "./FooterBase";
 import axios from "axios";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const getIpfsUrlFromScore = (score: string) => {
 	if (score === "A") {
@@ -50,14 +51,16 @@ const Dashboard = () => {
 
 	useEffect(() => {
 		(async () => {
-			if (!account.address) return;
+			if (!account.address) {
+				// Default
+				setOnChainScore(450);
+			}
 			const response = await axios.get(
 				`http://localhost:3000/?address=${account.address}`
 			);
 			const data = response.data;
 
 			const score = data.score ?? 450;
-			if (!score) return;
 			setOnChainScore(score);
 		})();
 	}, [account?.address]);
@@ -95,82 +98,95 @@ const Dashboard = () => {
 	}, [combinedScore, signer]);
 
 	return (
-		<Flex
-			flexDir="column"
-			alignItems="center"
-			height="100vh"
-			width="100%"
-			className="bg-gradient-to-r from-[#eaf2ff] to-[#d4e4ff]"
-		>
-			<HeaderBase />
-			<Flex width="100%">
-				<Flex flex={1}>
-					<CreditScoreCard
-						creditScore={combinedScore}
-						title="Your Overall Credit Score"
-						description="A weighted Average of your On- & Off-Chain Credit Score"
-					/>
-				</Flex>
-				<Flex flex={1}>
-					<CreditScoreCard
-						creditScore={onChainScore!}
-						title="On-Chain Credit Score"
-						description="calculated based on your On-Chain Behaviour & Activity"
-						metrics={[
-							"Total collateral value in ETH",
-							"Total debt in ETH",
-							"Total liquidity for wallet (ETH & USDC)",
-							"Number of times liquidated",
-						]}
-					/>
-				</Flex>
-				<Flex flex={1}>
-					<CreditScoreCard
-						creditScore={offChainScore ?? defaultOffChainScore}
-						title="Off-Chain Credit Score"
-						description="calculated based on your Off-Chain Behaviour & Activity"
-						metrics={["FICO Score"]}
-					/>
-				</Flex>
-			</Flex>
+		<>
+			<Head>
+				<link
+					href="https://fonts.googleapis.com/css2?family=Sniglet"
+					rel="stylesheet"
+				/>
+			</Head>
 			<Flex
 				flexDir="column"
-				backgroundColor={"white"}
-				mt="24px"
-				borderRadius="16px"
+				alignItems="center"
+				height="100vh"
+				width="100%"
+				fontFamily="Sniglet"
+				className="bg-gradient-to-r from-[#eaf2ff] to-[#d4e4ff]"
 			>
-				{mintingStatus === MintingStatus.MINTING ? (
-					<Spinner />
-				) : mintingStatus === MintingStatus.NOT_MINTED ? (
-					<Flex
-						flexDir="column"
-						alignItems="center"
-						px="16px"
-						py="16px"
-						borderRadius="16px"
-					>
-						<Heading mb="16px">Mint your Ethereum Reputation Score NFT</Heading>
-						<Button maxW="150px" onClick={handleButtonClick}>
-							Mint
-						</Button>
+				<HeaderBase />
+				<Flex width="100%">
+					<Flex flex={1}>
+						<CreditScoreCard
+							creditScore={combinedScore}
+							title="Your Overall Credit Score"
+							description="A weighted Average of your On- & Off-Chain Credit Score"
+						/>
 					</Flex>
-				) : (
-					<Flex
-						flexDir="column"
-						alignItems="center"
-						px="16px"
-						py="16px"
-						borderRadius="16px"
-					>
-						<Heading mb="16px">Minting successful, check the link at </Heading>
-						<Link href="https://ipfs.io/ipfs/{ipfsHash}">
-							https://ipfs.io/ipfs/{ipfsHash}
-						</Link>
+					<Flex flex={1}>
+						<CreditScoreCard
+							creditScore={onChainScore!}
+							title="On-Chain Credit Score"
+							description="calculated based on your On-Chain Behaviour & Activity"
+							metrics={[
+								"Total collateral value in ETH",
+								"Total debt in ETH",
+								"Total liquidity for wallet (ETH & USDC)",
+								"Number of times liquidated",
+							]}
+						/>
 					</Flex>
-				)}
+					<Flex flex={1}>
+						<CreditScoreCard
+							creditScore={offChainScore ?? defaultOffChainScore}
+							title="Off-Chain Credit Score"
+							description="calculated based on your Off-Chain Behaviour & Activity"
+							metrics={["FICO Score"]}
+						/>
+					</Flex>
+				</Flex>
+				<Flex
+					flexDir="column"
+					backgroundColor={"white"}
+					mt="24px"
+					borderRadius="16px"
+				>
+					{mintingStatus === MintingStatus.MINTING ? (
+						<Spinner />
+					) : mintingStatus === MintingStatus.NOT_MINTED ? (
+						<Flex
+							flexDir="column"
+							alignItems="center"
+							px="16px"
+							py="16px"
+							borderRadius="16px"
+						>
+							<Heading mb="16px">
+								Mint your Ethereum Reputation Score NFT
+							</Heading>
+							<Button maxW="150px" onClick={handleButtonClick}>
+								Mint
+							</Button>
+						</Flex>
+					) : (
+						<Flex
+							flexDir="column"
+							alignItems="center"
+							px="16px"
+							py="16px"
+							borderRadius="16px"
+						>
+							<Heading mb="16px">
+								Minting successful, check the link at{" "}
+							</Heading>
+							<Link href="https://ipfs.io/ipfs/{ipfsHash}">
+								https://ipfs.io/ipfs/{ipfsHash}
+							</Link>
+						</Flex>
+					)}
+				</Flex>
+				{/* <FooterBase /> */}
 			</Flex>
-			{/* <FooterBase /> */}
-		</Flex>
+		</>
 	);
 };
 

@@ -17,8 +17,8 @@ const HeaderBase: NextPage = () => {
 
 	return (
 		<Flex
-			//height="5vh"
 			width="90%"
+			fontFamily="Sniglet"
 			borderRadius="15px"
 			p={5}
 			mt={35}

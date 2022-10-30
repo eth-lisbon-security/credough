@@ -6,6 +6,7 @@ import HeaderBase from "./HeaderBase";
 import FooterBase from "./FooterBase";
 import axios from "axios";
 import { ethers } from "ethers";
+import { useRouter } from "next/router";
 
 const getIpfsUrlFromScore = (score: string) => {
 	if (score === "A") {
@@ -37,8 +38,17 @@ const Dashboard = () => {
 		MintingStatus.NOT_MINTED
 	);
 	const [onChainScore, setOnChainScore] = React.useState<number | null>(null);
+	const [offChainScore, setOffChainScore] = React.useState<number | null>(null);
+	const router = useRouter();
 
-	const backendApiUrl = useEffect(() => {
+	useEffect(() => {
+		const score = router.query.offChainScore as string | null;
+		if (score) {
+			setOffChainScore(Number(score));
+		}
+	}, [router.query?.offChainScore]);
+
+	useEffect(() => {
 		(async () => {
 			if (!account.address) return;
 			const response = await axios.get(
@@ -50,17 +60,26 @@ const Dashboard = () => {
 			if (!score) return;
 			setOnChainScore(score);
 		})();
-	}, [account.address]);
+	}, [account?.address]);
 
-	const offChainScore = 500;
-	const combinedScore = Math.round(((onChainScore ?? 450) + offChainScore) / 2);
+	const defaultOnChainScore = 450;
+
+	const defaultOffChainScore = useMemo(
+		() => Math.round(Math.random() * 500 + 350),
+		[]
+	);
+	const combinedScore = Math.round(
+		((onChainScore ?? defaultOnChainScore) +
+			(offChainScore ?? defaultOffChainScore)) /
+			2
+	);
 
 	const [ipfsHash, setIpfsHash] = React.useState<string | null>(null);
 
 	const handleButtonClick = useCallback(async () => {
 		if (!signer) return;
 		const factory = new ethers.Contract(
-			"0xf344611ae8860CBf5A982Fc396f2Ae86073920ca",
+			"0x9246CBb7aE2BB956aB15db20Be58ED6E04C3d0D0",
 			["function safeMint(address to, string memory uri)"],
 			signer
 		);
@@ -87,7 +106,7 @@ const Dashboard = () => {
 			<Flex width="100%">
 				<Flex flex={1}>
 					<CreditScoreCard
-						creditScore={350}
+						creditScore={combinedScore}
 						title="Your Overall Credit Score"
 						description="A weighted Average of your On- & Off-Chain Credit Score"
 					/>
@@ -107,7 +126,7 @@ const Dashboard = () => {
 				</Flex>
 				<Flex flex={1}>
 					<CreditScoreCard
-						creditScore={350}
+						creditScore={offChainScore ?? defaultOffChainScore}
 						title="Off-Chain Credit Score"
 						description="calculated based on your Off-Chain Behaviour & Activity"
 					/>
@@ -142,14 +161,14 @@ const Dashboard = () => {
 						py="16px"
 						borderRadius="16px"
 					>
-						<Heading mb="16px">
-							Minting successful, check the link at{" "}
-							<Link>https://ipfs.io/ipfs/{ipfsHash}</Link>
-						</Heading>
+						<Heading mb="16px">Minting successful, check the link at </Heading>
+						<Link href="https://ipfs.io/ipfs/{ipfsHash}">
+							https://ipfs.io/ipfs/{ipfsHash}
+						</Link>
 					</Flex>
 				)}
 			</Flex>
-			<FooterBase />
+			{/* <FooterBase /> */}
 		</Flex>
 	);
 };

@@ -9,9 +9,9 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import { Chewy } from "@next/font/google";
+import { Sniglet } from "@next/font/google";
 
-const chewy = Chewy({ weight: "400" });
+const sniglet = Sniglet({ weight: "400" });
 
 import Image from "next/image";
 

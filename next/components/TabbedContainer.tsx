@@ -10,6 +10,7 @@ import {
 	TabPanel,
 	TabPanels,
 	Tabs,
+	Text,
 } from "@chakra-ui/react";
 import {
 	useAccount,
@@ -81,7 +82,16 @@ const TabbedContainer: NextPage = () => {
 								alignItems={"center"}
 								justifyContent={"center"}
 							>
-								{account.isConnected ? <ConnectButton /> : <Web3Button />}
+								{account.isConnected ? (
+									<ConnectButton />
+								) : (
+									<Flex>
+										<Text color="black">
+											Connected! Please proceed ahead to your get your off-chain
+											data
+										</Text>
+									</Flex>
+								)}
 							</Flex>
 						</TabPanel>
 						<TabPanel>

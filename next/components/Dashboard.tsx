@@ -129,6 +129,7 @@ const Dashboard = () => {
 						creditScore={offChainScore ?? defaultOffChainScore}
 						title="Off-Chain Credit Score"
 						description="calculated based on your Off-Chain Behaviour & Activity"
+						metrics={["FICO Score"]}
 					/>
 				</Flex>
 			</Flex>

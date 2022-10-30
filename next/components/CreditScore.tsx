@@ -59,7 +59,13 @@ const CreditScoreCard = ({
 					<Heading fontSize="5xl">{creditScore}</Heading>
 					<Text fontSize="xl">out of 850</Text>
 				</Box>
-				<Flex justifyContent="center" flexDir={"column"}>
+				<Flex
+					justifyContent="center"
+					flexDir={"column"}
+					backgroundColor="#B9BAC7"
+					borderRadius="16px"
+					padding="8px"
+				>
 					<Heading fontWeight="light">Grade</Heading>
 					<Heading fontWeight="medium" textAlign="center" fontSize="5xl">
 						{grade}

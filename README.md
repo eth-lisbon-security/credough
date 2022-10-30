@@ -26,6 +26,13 @@ determine whether a user is creditworthy when borrowing on a DeFi lending protoc
 4. Only the user connected with his wallet can retrieve then the information. 
 
 
+## Architecture 
+
+![Architecture](./docs/Architecture.png)
+
+
+
+
 ## What's next for Credough ? 
 
 We are planning to add many features such as : 

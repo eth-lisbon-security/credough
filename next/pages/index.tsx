@@ -41,7 +41,7 @@ const Home: NextPage = () => {
       alignItems="center"
       justifyContent="center"
       height="100vh"
-      backgroundColor="black"
+      backgroundColor="white"
     >
       {!account.isConnected ? (
         <ConnectButton />

@@ -5,19 +5,11 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { Web3Modal } from "@web3modal/react";
 import { chains, providers } from "@web3modal/ethereum";
 
-const config = {
-  projectId: "0ba16e543126b61aaaa98e7b788743fe",
-  theme: "dark",
-  accentColor: "default",
-  ethereum: {
-    appName: "web3Modal",
-  },
-};
 // Configure web3modal
 const modalConfig = {
   projectId: "0ba16e543126b61aaaa98e7b788743fe",
   theme: "light" as const,
-  accentColor: "orange" as const,
+  accentColor: "default" as const,
   ethereum: {
     appName: "web3Modal",
     autoConnect: true,

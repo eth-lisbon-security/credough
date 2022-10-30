@@ -14,6 +14,7 @@ import axios from "axios";
 import Header from "../components/header";
 import Journey from "../components/journey";
 import Bounties from "../components/Bounties";
+import Footer from "../components/Footer";
 
 import { useAccount, useConnectModal, Web3Button } from "@web3modal/react";
 
@@ -37,6 +38,7 @@ const Home: NextPage = () => {
       <Header />
       <Journey />
       <Bounties />
+      <Footer />
     </Flex>
   );
 };

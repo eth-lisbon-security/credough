@@ -9,7 +9,7 @@ import { chains, providers } from "@web3modal/ethereum";
 const modalConfig = {
   projectId: "0ba16e543126b61aaaa98e7b788743fe",
   theme: "light" as const,
-  accentColor: "default" as const,
+  accentColor: "blue" as const,
   ethereum: {
     appName: "web3Modal",
     autoConnect: true,

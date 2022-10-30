@@ -15,13 +15,16 @@ const Footer: NextPage = () => {
   return (
     <Flex
       flexDir="row"
-      justifyContent="flex-start"
-      //height="5vh"
+      justifyContent="center"
+      alignItems={"center"}
+      height="10vh"
       width="90%"
-      backgroundColor="#38B5DCA1"
       borderRadius="15px"
       p={5}
-    ></Flex>
+      className="bg-gradient-to-t from-sniglet-blue to-white"
+    >
+      <span className="font-sniglet">made with ❤️ at ETHLisbon 🇵🇹</span>
+    </Flex>
   );
 };
 

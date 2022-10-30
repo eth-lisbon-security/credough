@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/eth-lisbon-security/escrow-deposit#readme",
   "dependencies": {
+    "alchemy-sdk": "^2.2.0",
     "apollo-server-express": "^3.10.3",
     "graphql": "^16.6.0",
     "graphql-request": "^5.0.0"

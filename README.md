@@ -54,9 +54,10 @@ pnpm dev
 ```
 
 
-## Twitter :  [Twitter](https://twitter.com/Credough_) 
+## Twitter :   
 
-- Twitter survey : 
+- [Account](https://twitter.com/Credough_) 
+- [Twitter survey](https://twitter.com/Credough_) 
 
 
 ## Contact Information :

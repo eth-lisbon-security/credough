@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/jsx-no-undef */
 import type { NextPage } from "next";
 import {
@@ -29,21 +30,31 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import apiJson from "../public/api.json";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+
+import { useEffect, useState } from "react";
 
 const TabbedContainer: NextPage = () => {
   const { isOpen, open, close } = useConnectModal();
   const { account } = useAccount();
 
+  const [onChain, setOnChain] = useState(0);
+  const [offChain, setOffChain] = useState(0);
+
+  const router = useRouter();
+
   const handleAPICall = () => {};
 
   useEffect(() => {
     if (account.isConnected) {
+      setOnChain(1);
     }
   }, [account.isConnected]);
 
   const handleButtonClick = async () => {
     console.log(apiJson);
+
+    setOffChain(1);
     //const bodyFormData = new FormData();
     //bodyFormData.append("email", "Thiahveona@gmail.com");
     //bodyFormData.append("password", "Success09$");
@@ -82,7 +93,7 @@ const TabbedContainer: NextPage = () => {
                 alignItems={"center"}
                 justifyContent={"center"}
               >
-                {account.isConnected ? <ConnectButton /> : <Web3Button />}
+                {!account.isConnected ? <ConnectButton /> : <Web3Button />}
               </Flex>
             </TabPanel>
             <TabPanel>
@@ -93,7 +104,27 @@ const TabbedContainer: NextPage = () => {
                 </Select>
               </FormControl>
 
-              <Button onClick={handleButtonClick}></Button>
+              <Button
+                onClick={handleButtonClick}
+                mt="12px"
+                className="bg-sniglet-blue"
+              >
+                Get Off-Chain Data
+              </Button>
+
+              <Flex
+                flexDir={"column"}
+                alignContent={"center"}
+                alignItems={"center"}
+                verticalAlign={"center"}
+              ></Flex>
+              <Button
+                disabled={onChain === 0 || offChain === 0}
+                className="bg-white rounded-xl"
+                onClick={() => router.push("/dashboard")}
+              >
+                Show Dashbaord
+              </Button>
             </TabPanel>
           </TabPanels>
         </Flex>

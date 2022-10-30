@@ -11,6 +11,8 @@ import {
 import { useCallback } from "react";
 import axios from "axios";
 
+import Header from "../components/header";
+
 import {
   useAccount,
   ConnectButton,
@@ -41,16 +43,10 @@ const Home: NextPage = () => {
       alignItems="center"
       justifyContent="center"
       height="100vh"
+      width="100%"
       backgroundColor="white"
     >
-      {!account.isConnected ? (
-        <ConnectButton />
-      ) : (
-        <Web3Button />
-        //<button onClick={open}>{account.address}</button>
-      )}
-      {/* or */}
-
+      <Header />
       <VStack flexDir="column" spacing="4" mb="4">
         <Heading>Enter your address here</Heading>
         <Input placeholder="Enter wallet address" size="md" />

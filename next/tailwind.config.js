@@ -18,6 +18,8 @@ module.exports = {
       },
       colors: {
         "sniglet-blue": "#38B5DCA1",
+        "sngilet-blue-light": "#81E1FF",
+        "sniglet-blue-dark": "#38B5DC",
       },
     },
   },

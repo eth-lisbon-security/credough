@@ -27,12 +27,23 @@ import {
   FormHelperText,
   Select,
 } from "@chakra-ui/react";
-//import axios from "axios";
+import axios from "axios";
 import apiJson from "../public/api.json";
+import { useEffect } from "react";
 
 const TabbedContainer: NextPage = () => {
   const { isOpen, open, close } = useConnectModal();
   const { account } = useAccount();
+
+
+  const handleAPICall = () => {
+
+  };
+
+  useEffect((
+  )=>{if(account.isConnected){
+      
+  }}[account.isConnected])
 
   const handleButtonClick = async () => {
     console.log(apiJson);

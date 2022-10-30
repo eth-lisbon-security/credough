@@ -12,6 +12,7 @@ import { useCallback } from "react";
 import axios from "axios";
 
 import Header from "../components/header";
+import Journey from "../components/journey";
 
 import {
   useAccount,
@@ -47,6 +48,7 @@ const Home: NextPage = () => {
       backgroundColor="white"
     >
       <Header />
+      <Journey />
       <VStack flexDir="column" spacing="4" mb="4">
         <Heading>Enter your address here</Heading>
         <Input placeholder="Enter wallet address" size="md" />

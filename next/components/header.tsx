@@ -15,20 +15,25 @@ import {
   useConnectModal,
   Web3Button,
 } from "@web3modal/react";
+import Image from "next/image";
 
 const Header: NextPage = () => {
   const { isOpen, open, close } = useConnectModal();
   const { account } = useAccount();
   return (
     <Flex
-      flexDir="column"
-      alignItems="center"
-      justifyContent="center"
-      height="5vh"
+      flexDir="row"
+      justifyContent="flex-start"
+      //height="5vh"
       width="90%"
       backgroundColor="#38B5DCA1"
       borderRadius="15px"
+      p={5}
     >
+      <Image src={"/images/o_donut.png"} width={40} height={40}></Image>
+      <Heading fontFamily={"Chewy"} color="white">
+        Credough
+      </Heading>
       {!account.isConnected ? <ConnectButton /> : <Web3Button />}
     </Flex>
   );

@@ -8,7 +8,7 @@ type Props = {
 	description: string;
 };
 
-const creditScoreToGrade = (creditScore: number) => {
+export const creditScoreToGrade = (creditScore: number) => {
 	if (creditScore <= 300) {
 		return "F";
 	} else if (creditScore <= 400) {

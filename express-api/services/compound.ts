@@ -71,9 +71,9 @@ async function getScoreOnCompound(address: string) {
 	const totalBorrowValueInEth = toFixed(borrowValueInEth);
 	const totalCollateralValueInEth = toFixed(collateralInEth);
 
-	// Numbers range from 300 -> 300 + 550
-	const maxRange = 550;
-	const minValue = 300;
+	// Numbers range from 350 -> 350 + 500
+	const maxRange = 500;
+	const minValue = 350;
 
 	// Aribritary numbers
 	const growthRate = 2;

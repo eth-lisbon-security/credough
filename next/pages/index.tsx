@@ -13,6 +13,7 @@ import axios from "axios";
 
 import Header from "../components/header";
 import Journey from "../components/journey";
+import Bounties from "../components/Bounties";
 
 import { useAccount, useConnectModal, Web3Button } from "@web3modal/react";
 
@@ -35,11 +36,7 @@ const Home: NextPage = () => {
     >
       <Header />
       <Journey />
-      <VStack flexDir="column" spacing="4" mb="4">
-        <Heading>Enter your address here</Heading>
-        <Input placeholder="Enter wallet address" size="md" />
-      </VStack>
-      <Button onClick={handleOnClick}>Submit details</Button>
+      <Bounties />
     </Flex>
   );
 };

@@ -6,7 +6,6 @@ import { Sniglet } from "@next/font/google";
 const sniglet = Sniglet({ weight: "400" });
 
 import Image from "next/image";
-import Bounties from "./Bounties";
 
 const Journey: NextPage = () => {
   return (
@@ -19,11 +18,11 @@ const Journey: NextPage = () => {
     >
       <Flex flexDir="row">
         <Flex flexDir={"column"} width="50%">
-          <main className="mt-10 max-w-7xl sm:mt-12 md:mt-16 lg:mt-20 xl:mt-28">
+          <main className="mt-10 max-w-7xl sm:mt-12 md:mt-16 lg:mt-20 xl:mt-28 font-sniglet">
             <div className="sm:text-center lg:text-left">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
                 <span className="block xl:inline">Data to enrich your</span>{" "}
-                <span className="block text-indigo-600 xl:inline">
+                <span className="block text-sniglet-blue xl:inline">
                   online business
                 </span>
               </h1>
@@ -55,14 +54,13 @@ const Journey: NextPage = () => {
         </Flex>
         <Flex flexDir={"column"} width="40%" alignItems="center">
           <Image
-            src={"/images/o_donut.png"}
+            src={"/images/app_mock.png"}
             width={250}
             height={250}
             alt="donuts"
           />
         </Flex>
       </Flex>
-      <Bounties />
     </Flex>
   );
 };

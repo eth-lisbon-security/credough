@@ -1,13 +1,41 @@
-import React, { useEffect, useMemo } from "react";
-import { Flex, Text } from "@chakra-ui/react";
-import CreditScoreCard from "./CreditScore";
-import { useAccount } from "@web3modal/react";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { Button, Flex, Heading, Link, Spinner, Text } from "@chakra-ui/react";
+import CreditScoreCard, { creditScoreToGrade } from "./CreditScore";
+import { useAccount, useSigner } from "@web3modal/react";
 import HeaderBase from "./HeaderBase";
 import FooterBase from "./FooterBase";
 import axios from "axios";
+import { ethers } from "ethers";
+
+const getIpfsUrlFromScore = (score: string) => {
+	if (score === "A") {
+		return "QmYA9xzhNwgsoy3QcEV39ZajxnRv3BMm2mjr71aod8kF89";
+	} else if (score === "B") {
+		return "QmWfBtnBWSkVfSaZEJreMbu7Mq9NbfpCLcW42yUw7QJPsY";
+	} else if (score === "C") {
+		return "QmTCry6sHBzcnBwp9kTLBn5xpYYvhvwiag9BogjyrvhEav";
+	} else if (score === "D") {
+		return "Qmepnw6BMcpDEVLmGkaUiyzqtVEM6TyQBza8yyJqgXFy6i";
+	} else if (score === "E") {
+		return "QmUgSBs7FQ3BkjeDSPfJ79WcYR2q4tJonpZHSUUWh7EDuL";
+	} else if (score === "F") {
+		return "QmVMpgpJ4b2zE5Mrz232SFejimw5xkpMmDqW9qjGLUQY4n";
+	}
+};
+
+enum MintingStatus {
+	NOT_MINTED,
+	MINTING,
+	MINTED,
+}
 
 const Dashboard = () => {
 	const { account } = useAccount();
+	const { data: signer } = useSigner();
+
+	const [mintingStatus, setMintingStatus] = React.useState<MintingStatus>(
+		MintingStatus.NOT_MINTED
+	);
 	const [onChainScore, setOnChainScore] = React.useState<number | null>(null);
 
 	const backendApiUrl = useEffect(() => {
@@ -26,6 +54,26 @@ const Dashboard = () => {
 
 	const offChainScore = 500;
 	const combinedScore = Math.round(((onChainScore ?? 450) + offChainScore) / 2);
+
+	const [ipfsHash, setIpfsHash] = React.useState<string | null>(null);
+
+	const handleButtonClick = useCallback(async () => {
+		if (!signer) return;
+		const factory = new ethers.Contract(
+			"0xf344611ae8860CBf5A982Fc396f2Ae86073920ca",
+			["function safeMint(address to, string memory uri)"],
+			signer
+		);
+
+		const ipfs = getIpfsUrlFromScore(creditScoreToGrade(combinedScore));
+		const tx = await factory.safeMint(await signer.getAddress(), ipfs);
+
+		setIpfsHash(ipfs!);
+
+		setMintingStatus(MintingStatus.MINTING);
+		await tx.wait();
+		setMintingStatus(MintingStatus.MINTED);
+	}, [combinedScore, signer]);
 
 	return (
 		<Flex
@@ -64,6 +112,42 @@ const Dashboard = () => {
 						description="calculated based on your Off-Chain Behaviour & Activity"
 					/>
 				</Flex>
+			</Flex>
+			<Flex
+				flexDir="column"
+				backgroundColor={"white"}
+				mt="24px"
+				borderRadius="16px"
+			>
+				{mintingStatus === MintingStatus.MINTING ? (
+					<Spinner />
+				) : mintingStatus === MintingStatus.NOT_MINTED ? (
+					<Flex
+						flexDir="column"
+						alignItems="center"
+						px="16px"
+						py="16px"
+						borderRadius="16px"
+					>
+						<Heading mb="16px">Mint your Ethereum Reputation Score NFT</Heading>
+						<Button maxW="150px" onClick={handleButtonClick}>
+							Mint
+						</Button>
+					</Flex>
+				) : (
+					<Flex
+						flexDir="column"
+						alignItems="center"
+						px="16px"
+						py="16px"
+						borderRadius="16px"
+					>
+						<Heading mb="16px">
+							Minting successful, check the link at{" "}
+							<Link>https://ipfs.io/ipfs/{ipfsHash}</Link>
+						</Heading>
+					</Flex>
+				)}
 			</Flex>
 			<FooterBase />
 		</Flex>

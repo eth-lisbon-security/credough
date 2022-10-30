@@ -35,15 +35,12 @@ const TabbedContainer: NextPage = () => {
   const { isOpen, open, close } = useConnectModal();
   const { account } = useAccount();
 
+  const handleAPICall = () => {};
 
-  const handleAPICall = () => {
-
-  };
-
-  useEffect((
-  )=>{if(account.isConnected){
-      
-  }}[account.isConnected])
+  useEffect(() => {
+    if (account.isConnected) {
+    }
+  }, [account.isConnected]);
 
   const handleButtonClick = async () => {
     console.log(apiJson);

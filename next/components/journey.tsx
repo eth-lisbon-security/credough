@@ -12,10 +12,11 @@ const Journey: NextPage = () => {
     <Flex
       flexDir="column"
       justifyContent="space-between"
+      height={"40vh"}
+      marginBottom="160px"
       maxWidth="80%"
       borderRadius="15px"
       p={5}
-      pb={50}
     >
       <Flex
         flexDir="row"

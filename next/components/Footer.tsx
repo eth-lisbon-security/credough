@@ -23,6 +23,7 @@ const Footer: NextPage = () => {
       p={5}
       position="fixed"
       bottom={0}
+      mt={5}
       className="bg-gradient-to-t from-sniglet-blue to-white"
     >
       <span className="font-sniglet">made with ❤️ at ETHLisbon 🇵🇹</span>

@@ -17,6 +17,7 @@ import Bounties from "../components/Bounties";
 import Footer from "../components/Footer";
 
 import { useAccount, useConnectModal, Web3Button } from "@web3modal/react";
+//import ScatterPlot from "../components/ScatterPlot";
 
 const Home: NextPage = () => {
   const { isOpen, open, close } = useConnectModal();
@@ -37,6 +38,7 @@ const Home: NextPage = () => {
       <Header />
       <Journey />
       <Bounties />
+      {/*<ScatterPlot />*/}
       <Footer />
     </Flex>
   );

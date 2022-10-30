@@ -34,7 +34,7 @@ const HeaderBase: NextPage = () => {
       {/*new code*/}
       {/*<Flex>{account.isConnected ? <Web3Button /> : <></>}</Flex>*/}
       {/*debug*/}
-      <Flex>{!account.isConnected ? <ConnectButton /> : <Web3Button />}</Flex>
+      <Flex>{!account.isConnected ? account.address : <></>}</Flex>
     </Flex>
   );
 };

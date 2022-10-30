@@ -1,13 +1,5 @@
 import type { NextPage } from "next";
-import {
-  Flex,
-  Heading,
-  Input,
-  VStack,
-  Button,
-  Box,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 
 import {
   useAccount,

@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Sniglet&display=swap");
+/* From Public Directory */
+@font-face {
+  font-family: "Sniglet";
+  src: url("/fonts/Sniglet-Regular.ttf");
+  font-style: medium;
+  font-weight: "400";
+  font-display: swap;
+}
+
 html,
 body {
   padding: 0;

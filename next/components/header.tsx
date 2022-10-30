@@ -17,10 +17,6 @@ import {
 } from "@web3modal/react";
 import Image from "next/image";
 
-import { Sniglet } from "@next/font/google";
-
-const sniglet = Sniglet({ weight: "400" });
-
 const Header: NextPage = () => {
   const { isOpen, open, close } = useConnectModal();
   const { account } = useAccount();
@@ -35,7 +31,7 @@ const Header: NextPage = () => {
       p={5}
     >
       <Image src={"/images/o_donut.png"} width={40} height={40}></Image>
-      <Heading className={sniglet.className} color="white">
+      <Heading color="white" fontFamily={"Sniglet"}>
         Credough
       </Heading>
       {!account.isConnected ? <ConnectButton /> : <Web3Button />}
